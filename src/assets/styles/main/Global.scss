@@ -1,0 +1,22 @@
+/**
+ * Global styles over all views
+ */
+@import "GlobalVariables";
+
+#om-system-configurations {
+    font-family: $omFont;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: $omBlack;
+    background-color: $omWhite;
+}
+
+// html elements
+.om-button {
+
+}
+
+// html element conditions
+.om-hidden {
+    display: none;
+}

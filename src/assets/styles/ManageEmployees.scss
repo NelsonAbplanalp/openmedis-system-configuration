@@ -1,0 +1,53 @@
+/**
+ * employees grid and editor
+ */
+@import "main/GlobalVariables";
+
+#om-employees-list {
+    width: 98%;
+    text-align: center;
+    margin: 10px;
+    -webkit-box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
+    box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
+
+    thead, tbody, tr, td, th {
+        display: block;
+    }
+
+    tbody {
+        overflow-y: auto;
+    }
+
+    tr:after {
+        content: ' ';
+        display: block;
+        visibility: hidden;
+        clear: both;
+    }
+
+    .second-row {
+        background-color: $omGray;
+    }
+
+    th {
+        background-color: $omDarkGray;
+        height: 2.5em;
+        float: left;
+
+        span {
+            margin: 2em;
+        }
+    }
+
+    td {
+        height: 2em;
+        float: left;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .glyphicon.glyphicon-user.disabled {
+        color: $omDarkGray;
+    }
+}

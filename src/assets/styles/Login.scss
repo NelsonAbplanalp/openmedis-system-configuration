@@ -1,0 +1,82 @@
+/**
+ * Login page
+ */
+@import "main/GlobalVariables";
+
+#om-logo-welcome {
+    display: block;
+    width: 70%;
+    margin: 0 auto;
+    text-align: center;
+
+    span {
+        font-size: xx-large;
+        font-weight: bold;
+        display: list-item;
+        margin-top: 2em;
+    }
+
+    img {
+        display: list-item;
+        width: 95%;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+}
+
+#om-login-container {
+    position: relative;
+    display: block;
+    text-align: center;
+    width: 35%;
+    min-width: 350px;
+    margin: 10% auto;
+    -webkit-box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
+    box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
+
+    #om-login-header {
+        background-color: $omBlue;
+        color: $omWhite;
+        font-size: large;
+        font-weight: bold;
+        padding: 0.4em;
+        margin-bottom: 0.5em;
+    }
+
+    #om-login-form {
+        display: block;
+        min-height: 150px;
+        max-width: 450px;
+        min-width: 250px;
+        margin: auto;
+
+        .om-login-row {
+            display: inline-block;
+            margin: 0.8em;
+
+            label {
+                padding: 0 2em 0 0.4em;
+                font-weight: bold;
+            }
+
+            input {
+                float: right;
+            }
+        }
+
+        #om-login-submit {
+            background-color: $omBlue;
+            color: $omWhite;
+            border: none;
+            padding: 0.5em 3.5em;
+            font-weight: bold;
+            margin: 1em;
+        }
+
+        #om-login-submit:hover {
+            background-color: $omDarkGray;
+            color: $omWhite;
+        }
+    }
+}

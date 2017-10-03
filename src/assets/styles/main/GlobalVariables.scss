@@ -1,0 +1,42 @@
+// colors
+$omBlack: #333333;
+$omRed: #c03324;
+$omBlue: #498bb6;
+$omWhite: #ffffff;
+$omGray: #bdbdbc;
+$omDarkGray: #878787;
+$omLightBlue: #ccd9e9;
+
+$omHighlight: #e5e5d0;
+//$omLink        : #;
+//$omLinkVisited : #;
+
+// text
+$omFont: Open Sans, Helvetica, Arial, sans-serif;
+
+// icons
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+$iconUser: 'glyphicon glyphicon-user';
+$iconInfo: 'glyphicon glyphicon-info-sign';
+$iconPlus: 'glyphicon glyphicon-plus';
+$iconRemove: 'glyphicon glyphicon-remove';
+$iconFilter: 'glyphicon glyphicon-filter';
+
+// elements
+.om-input {
+    // @todo: optimize background
+    border: none;
+    background: white no-repeat;
+    background-image: linear-gradient(to bottom, $omBlue, $omBlue),
+                      linear-gradient(to bottom, $omBlack, $omBlack);
+    background-size: 0 2px, 100% 1px;
+    background-position: 50% 100%, 50% 100%;
+
+    /* animation solely on background-size */
+    transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+}
+
+.om-input:focus {
+    background-size: 100% 2px, 100% 1px;
+    outline: none;
+}
