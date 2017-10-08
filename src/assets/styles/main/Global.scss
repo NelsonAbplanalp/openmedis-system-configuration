@@ -11,12 +11,42 @@
     background-color: $omWhite;
 }
 
+//-----------------------------------
 // html elements
-.om-button {
-
+//-----------------------------------
+.om-default-button {
+    background-color: $omBlue;
+    color: $omWhite;
+    border: none;
+    padding: 0.5em 3.5em;
+    font-weight: bold;
+    margin: 1em;
 }
 
+.om-default-button:hover {
+    background-color: $omDarkGray;
+    color: $omWhite;
+}
+
+//-----------------------------------
 // html element conditions
+//-----------------------------------
 .om-hidden {
     display: none;
+}
+
+//-----------------------------------
+// Animations
+//-----------------------------------
+/* Enter and leave animations */
+.slide-fade-enter-active {
+    transition: all .3s ease;
+}
+.slide-fade-leave-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
 }

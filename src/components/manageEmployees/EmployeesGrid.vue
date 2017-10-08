@@ -10,9 +10,13 @@
             </tr>
         </thead>
         <tbody :style="{ height: tableHeight+'px' }">
-            <tr v-for="(employee, index) in employeesData" v-bind:class="{ 'second-row': index % 2 == 0 }">
+            <tr @click="setRowAsSelected"
+                v-for="(employee, index) in employeesData"
+                v-bind:class="{ 'second-row': index % 2 == 0 }">
 
-                <td v-for="column in columns" v-if="column.visible" :style="{ width: column.width}">
+                <td v-for="column in columns"
+                    v-if="column.visible"
+                    :style="{ width: column.width}">
                     <span v-if="column.field === 'firstName'">
                         {{ employee[column.field] + ' ' + employee['lastName'] }}
                     </span>
@@ -37,64 +41,14 @@
         name: 'EmployeesGrid',
         data() {
             return {
-                columns: [
-                    {
-                        text  : 'ID',
-                        field : 'id',
-                        visible: true,
-                        width : '6%'
-                    },{
-                        text  : 'Employee',
-                        field : 'firstName',  //'lastName'
-                        visible: true,
-                        width : '20%'
-                    },{
-                        text  : 'isUser',
-                        field : 'userId',
-                        visible: true,
-                        width : '5%'
-                    },{
-                        text  : 'Position',
-                        field : 'position',
-                        visible: true,
-                        width : '17%'
-                    },{
-                        text  : 'Building',
-                        field : 'building',
-                        visible: true,
-                        width : '18%'
-                    },{
-                        text  : 'Floor',
-                        field : 'floor',
-                        visible: true,
-                        width : '10%'
-                    },{
-                        text  : 'Room',
-                        field : 'roomNumber',
-                        visible: false
-                    },{
-                        text  : 'Email',
-                        field : 'email',
-                        visible: true,
-                        width : '24%'
-                    },{
-                        text  : 'Mobile',
-                        field : 'mobilePhone',
-                        visible: false
-                    },{
-                        text  : 'Work',
-                        field : 'workPhone',
-                        visible: false
-                    }
-                ],
+                columns: columnsData,
                 employeesData: testData,
                 tableHeight: 0,
                 errors: []
             }
         },
-
         mounted: function () {
-            this.tableHeight = this.calcTableHeader();
+            this.tableHeight = this.calcTableHeader() + 112;
             window.addEventListener('resize', this.setTableResize);
         },
         beforeDestroy: function () {
@@ -113,9 +67,45 @@
                     tableHeaderHeight = document.getElementById('om-employees-list-header').clientHeight;
 
                 return document.documentElement.clientHeight - headerHeight - navHeight - tableHeaderHeight - 20;
-            }
-        },
+            },
+            setRowAsSelected: function (event) {
+                let clickedRow = this.getClickedRow(event.path),
+                    selectedRowClass = 'om-selected-row'
 
+                if (clickedRow) {
+                    if (clickedRow.classList.contains('om-selected-row')) {
+                        clickedRow.classList.remove(selectedRowClass)
+                        this.isRowSelected = false
+                    } else {
+                        this.setAllOtherRowsAsNotSelected()
+                        clickedRow.classList.add(selectedRowClass)
+                        this.isRowSelected = true
+                    }
+                }
+            },
+            getClickedRow: function (clickedElementPath) {
+                let row = false
+
+                clickedElementPath.forEach(function (element) {
+                    if (element.tagName === 'TR') {
+                        row = element
+                    }
+                })
+
+                return row
+            },
+            setAllOtherRowsAsNotSelected: function () {
+                var employeesTable = document.getElementById('om-employees-list'),
+                    rows           = employeesTable.rows,
+                    selectedClass  = 'om-selected-row'
+
+                for (var i = 0, row; row = rows[i]; i++) {
+                    if (row.classList.contains(selectedClass)) {
+                        row.classList.remove(selectedClass)
+                    }
+                }
+            }
+        }
         // @todo: create api request to get all employees (fix backend access)
 //        created() {
 //            const data = new FormData();
@@ -139,6 +129,57 @@
 //                })
 //        }
     }
+
+    const columnsData = [
+        {
+            text  : 'ID',
+            field : 'id',
+            visible: true,
+            width : '6%'
+        },{
+            text  : 'Employee',
+            field : 'firstName',  //'lastName'
+            visible: true,
+            width : '20%'
+        },{
+            text  : 'isUser',
+            field : 'userId',
+            visible: true,
+            width : '5%'
+        },{
+            text  : 'Position',
+            field : 'position',
+            visible: true,
+            width : '17%'
+        },{
+            text  : 'Building',
+            field : 'building',
+            visible: true,
+            width : '18%'
+        },{
+            text  : 'Floor',
+            field : 'floor',
+            visible: true,
+            width : '10%'
+        },{
+            text  : 'Room',
+            field : 'roomNumber',
+            visible: false
+        },{
+            text  : 'Email',
+            field : 'email',
+            visible: true,
+            width : '24%'
+        },{
+            text  : 'Mobile',
+            field : 'mobilePhone',
+            visible: false
+        },{
+            text  : 'Work',
+            field : 'workPhone',
+            visible: false
+        }
+    ]
 
     const testData = [
         {

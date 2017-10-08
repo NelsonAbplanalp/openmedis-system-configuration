@@ -24,7 +24,9 @@
             return {}
         },
         methods: {
-            isLoggedIn: function () { return this.$router.currentRoute.name === 'Login' }
+            isLoggedIn: function () {
+                return this.$router.currentRoute.name === 'Login'
+            }
         }
     }
 </script>

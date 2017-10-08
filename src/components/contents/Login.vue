@@ -15,7 +15,7 @@
                     <label for="om-login-password">Password</label>
                     <input id="om-login-password" class="om-input" type="password"/>
                 </div>
-                <button id="om-login-submit" @click.self.prevent="onLoginClick">LOGIN</button>
+                <button id="om-login-submit" class="om-default-button" @click.self.prevent="onLoginClick">LOGIN</button>
                 <!--@todo: add forgot-password link-->
             </form>
         </div>

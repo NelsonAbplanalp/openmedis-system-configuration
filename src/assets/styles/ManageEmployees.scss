@@ -3,8 +3,10 @@
  */
 @import "main/GlobalVariables";
 
+
+// employees table
 #om-employees-list {
-    width: 98%;
+    width: 60%;
     text-align: center;
     margin: 10px;
     -webkit-box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
@@ -17,6 +19,12 @@
 
     tbody {
         overflow-y: auto;
+    }
+
+    tr:hover,
+    .om-selected-row {
+        background-color: $omHighlight !important;
+        cursor: pointer;
     }
 
     tr:after {
@@ -50,4 +58,11 @@
     .glyphicon.glyphicon-user.disabled {
         color: $omDarkGray;
     }
+}
+
+// employee edit
+#om-employee-edit-container {
+    height: 500px;
+    width: 200px;
+    background-color: #c03324;
 }

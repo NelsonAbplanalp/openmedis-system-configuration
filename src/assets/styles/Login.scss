@@ -64,19 +64,5 @@
                 float: right;
             }
         }
-
-        #om-login-submit {
-            background-color: $omBlue;
-            color: $omWhite;
-            border: none;
-            padding: 0.5em 3.5em;
-            font-weight: bold;
-            margin: 1em;
-        }
-
-        #om-login-submit:hover {
-            background-color: $omDarkGray;
-            color: $omWhite;
-        }
     }
 }
