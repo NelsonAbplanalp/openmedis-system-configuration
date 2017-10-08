@@ -1,5 +1,5 @@
 <template>
-    <table id="om-employees-list">
+    <table id="om-employees-list" class="om-shadow-effect">
         <thead id="om-employees-list-header">
             <tr>
                 <th v-for="column in columns" v-if="column.visible" :style="{ width: column.width}" >
@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody :style="{ height: tableHeight+'px' }">
-            <tr @click="setRowAsSelected"
+            <tr @click="onEmployeeRowClick"
                 v-for="(employee, index) in employeesData"
                 v-bind:class="{ 'second-row': index % 2 == 0 }">
 
@@ -43,30 +43,38 @@
             return {
                 columns: columnsData,
                 employeesData: testData,
-                tableHeight: 0,
                 errors: []
             }
         },
         mounted: function () {
-            this.tableHeight = this.calcTableHeader() + 112;
+            this.$store.dispatch('setContentHeight', this.calcTableHeader() + 112)
             window.addEventListener('resize', this.setTableResize);
         },
         beforeDestroy: function () {
             window.removeEventListener('resize', this.setTableResize)
         },
+        computed: {
+            tableHeight() {
+                return this.$store.state.contentHeight
+            }
+        },
         methods: {
             setTableResize: function () {
-                this.tableHeight = this.calcTableHeader();
+                this.$store.dispatch('setContentHeight', this.calcTableHeader())
             },
             /**
              * @returns {number}
              */
             calcTableHeader: function () {
-                let headerHeight      = document.getElementById('om-header').clientHeight,
+                var headerHeight      = document.getElementById('om-header').clientHeight,
                     navHeight         = document.getElementById('om-navigation').clientHeight,
                     tableHeaderHeight = document.getElementById('om-employees-list-header').clientHeight;
 
                 return document.documentElement.clientHeight - headerHeight - navHeight - tableHeaderHeight - 20;
+            },
+            onEmployeeRowClick: function (event) {
+                this.setRowAsSelected(event)
+                // @todo: set employeeData (in EditEmployee)
             },
             setRowAsSelected: function (event) {
                 let clickedRow = this.getClickedRow(event.path),
@@ -75,11 +83,13 @@
                 if (clickedRow) {
                     if (clickedRow.classList.contains('om-selected-row')) {
                         clickedRow.classList.remove(selectedRowClass)
-                        this.isRowSelected = false
+                        this.$store.dispatch('setEmployeeEditVisibility', false)
+                        document.getElementById('om-employees-list').classList.remove('om-table-small')
                     } else {
                         this.setAllOtherRowsAsNotSelected()
                         clickedRow.classList.add(selectedRowClass)
-                        this.isRowSelected = true
+                        this.$store.dispatch('setEmployeeEditVisibility', true)
+                        document.getElementById('om-employees-list').classList.add('om-table-small')
                     }
                 }
             },
@@ -114,7 +124,6 @@
 //
 //            axios.post(process.env.API_URL + '/api/authenticate', data)
 //                .then(response => {
-//                    console.log('response', response);
 //                    axios.get(process.env.API_URL + '/api/_search/employees')
 //                        .then(response => {
 //                            // JSON responses are automatically parsed.

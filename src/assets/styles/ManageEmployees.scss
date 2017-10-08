@@ -6,12 +6,10 @@
 
 // employees table
 #om-employees-list {
-    width: 60%;
+    width: 98%;
+    display: inline-block;
     text-align: center;
     margin: 10px;
-    -webkit-box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
-    box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
 
     thead, tbody, tr, td, th {
         display: block;
@@ -62,7 +60,9 @@
 
 // employee edit
 #om-employee-edit-container {
-    height: 500px;
-    width: 200px;
-    background-color: #c03324;
+    width: 30%;
+    min-width: 200px;
+    display: inline-block;
+    position: absolute;
+    margin: 10px;
 }

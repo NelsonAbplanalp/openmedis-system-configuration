@@ -14,6 +14,14 @@
 //-----------------------------------
 // html elements
 //-----------------------------------
+.container {
+    display: block;
+}
+
+.om-table-small {
+    width: 65% !important;
+}
+
 .om-default-button {
     background-color: $omBlue;
     color: $omWhite;
@@ -28,11 +36,32 @@
     color: $omWhite;
 }
 
+.om-cancel-button {
+    background-color: $omDarkGray;
+    color: $omWhite;
+    border: none;
+    padding: 0.5em 3.5em;
+    font-weight: bold;
+    margin: 1em;
+}
+
+.om-cancel-button:hover {
+    background-color: $omWhite;
+    color: $omBlack;
+    border: 1px solid $omBlack;
+}
+
 //-----------------------------------
 // html element conditions
 //-----------------------------------
 .om-hidden {
     display: none;
+}
+
+.om-shadow-effect {
+    -webkit-box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
+    box-shadow: 6px 6px 28px -6px rgba(0, 0, 0, 0.75);
 }
 
 //-----------------------------------

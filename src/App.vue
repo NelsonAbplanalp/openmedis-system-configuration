@@ -14,6 +14,7 @@
     import Navigation from './components/header/Navigation.vue'
     import AppHeader from './components/header/AppHeader.vue'
     import router from './routing/router'
+    import store from './vuex-store/store'
 
     export default {
         name: 'om-system-configurations',

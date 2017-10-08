@@ -3,9 +3,7 @@
         <section class="section">
             <div class="container">
                 <employees-grid></employees-grid>
-                <transition name="slide-fade" mode="out-in">
-                    <edit-employee :is="isRowSelected" :key="isRowSelected"></edit-employee>
-                </transition>
+                <edit-employee></edit-employee>
             </div>
         </section>
     </main>
@@ -17,9 +15,7 @@
 
     export default {
         data() {
-            return {
-                isRowSelected: false
-            }
+            return {}
         },
         components: {
             EditEmployee,
