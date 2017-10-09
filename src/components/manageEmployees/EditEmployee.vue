@@ -15,7 +15,7 @@
                 </fieldset>
                 <fieldset>
                     <label for="om-edit-employee-last-name">Last name</label>
-                    <input id="om-edit-employee-last-name" class="om-input" v-bind:value="employeeLastName" v-on:input="employeeLastName.set($event.target.value)"/>
+                    <input id="om-edit-employee-last-name" class="om-input" v-model="employeeLastName"/>
                 </fieldset>
                 <fieldset>
                     <label for="om-edit-employee-first-name">First name</label>
@@ -53,8 +53,8 @@
                 </fieldset>
 
                 <div class="om-edit-employee-form-buttons">
-                    <button id="om-edit-employee-cancel" class="om-cancel-button" @click.self.prevent="getEmployeeData">Cancel</button>
-                    <button id="om-edit-employee-save"  class="om-default-button" @click.self.prevent="getEmployeeData">Save Changes</button>
+                    <button id="om-edit-employee-cancel" class="om-cancel-button" @click.self.prevent="cancelEditEmployeeChanges">Cancel</button>
+                    <button id="om-edit-employee-save"  class="om-default-button" @click.self.prevent="saveEditEmployeeChanges">Save Changes</button>
                 </div>
             </form>
         </div>
@@ -71,8 +71,11 @@
             }
         },
         methods: {
-            getEmployeeData: function () {
-                console.log('this.$store.state.editEmployeeData', this.$store.state.editEmployeeData)
+            saveEditEmployeeChanges: function () {
+                // @todo: create api post, where data gets changed in database (axios)
+            },
+            cancelEditEmployeeChanges: function () {
+                // @todo: reset all changes by initialEmployeeData
             }
         },
         computed: {
@@ -90,12 +93,8 @@
                 set (value) { this.$store.commit('updateEmployeeUserId', value) }
             },
             employeeId: {
-                get: function() {
-                    console.info('jojojojojo')
-                    return this.$store.state.editEmployeeData.id },
-                set: function (value) {
-                    console.log('value', value)
-                    this.$store.commit('updateEmployeeId', value) }
+                get: function() { return this.$store.state.editEmployeeData.id },
+                set: function (value) { this.$store.commit('updateEmployeeId', value) }
             },
             employeeLastName: {
                 get: function () { return this.$store.state.editEmployeeData.lastName },

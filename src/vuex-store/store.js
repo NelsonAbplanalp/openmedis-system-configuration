@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        API_URL: 'https://openmedis-api-url/example',
         contentHeight: 0,
         isEmployeeEditVisible: false,
         editEmployeeData: {

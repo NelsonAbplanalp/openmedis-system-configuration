@@ -138,9 +138,9 @@
 //            data.append('username', 'admin');
 //            data.append('password', 'admin');
 //
-//            axios.post(process.env.API_URL + '/api/authenticate', data)
+//            axios.post(this.$store.state.API_URL + '/api/authenticate', data)
 //                .then(response => {
-//                    axios.get(process.env.API_URL + '/api/_search/employees')
+//                    axios.get(this.$store.state.API_URL + '/api/_search/employees')
 //                        .then(response => {
 //                            // JSON responses are automatically parsed.
 //                            this.employeesData = response.data
