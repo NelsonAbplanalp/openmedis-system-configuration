@@ -18,6 +18,24 @@
     display: block;
 }
 
+.om-input {
+    // @todo: optimize background
+    border: none;
+    background: white no-repeat;
+    background-image: linear-gradient(to bottom, $omBlue, $omBlue),
+    linear-gradient(to bottom, $omBlack, $omBlack);
+    background-size: 0 2px, 100% 1px;
+    background-position: 50% 100%, 50% 100%;
+
+    /* animation solely on background-size */
+    transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+}
+
+.om-input:focus {
+    background-size: 100% 2px, 100% 1px;
+    outline: none;
+}
+
 .om-table-small {
     width: 65% !important;
 }

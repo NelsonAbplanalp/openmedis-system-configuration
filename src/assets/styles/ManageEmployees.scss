@@ -65,4 +65,40 @@
     display: inline-block;
     position: absolute;
     margin: 10px;
+    padding: 1em;
+}
+
+#om-edit-employee-form {
+    display: block;
+    padding: 1em;
+    margin: 0.5em 0;
+
+    fieldset {
+        border: none;
+        padding: 0;
+        margin: 0.5em 0;
+    }
+
+    button {
+        width: 45%;
+        padding: 0.5em 0;
+        margin: 1em 0.3em;
+    }
+
+    label {
+        float: left;
+        font-weight: bold;
+    }
+
+    input, span {
+        float: right;
+    }
+
+    span.glyphicon-user {
+        font-size: 1.5em;
+    }
+
+    .om-edit-employee-form-buttons {
+        margin-top: 3em;
+    }
 }

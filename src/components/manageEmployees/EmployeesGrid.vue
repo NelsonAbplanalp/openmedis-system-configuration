@@ -10,8 +10,8 @@
             </tr>
         </thead>
         <tbody :style="{ height: tableHeight+'px' }">
-            <tr @click="onEmployeeRowClick"
-                v-for="(employee, index) in employeesData"
+            <tr v-for="(employee, index) in employeesData"
+                @click="onEmployeeRowClick(employee, $event)"
                 v-bind:class="{ 'second-row': index % 2 == 0 }">
 
                 <td v-for="column in columns"
@@ -72,9 +72,9 @@
 
                 return document.documentElement.clientHeight - headerHeight - navHeight - tableHeaderHeight - 20;
             },
-            onEmployeeRowClick: function (event) {
+            onEmployeeRowClick: function (employee, event) {
                 this.setRowAsSelected(event)
-                // @todo: set employeeData (in EditEmployee)
+                this.setEmployeeData(employee)
             },
             setRowAsSelected: function (event) {
                 let clickedRow = this.getClickedRow(event.path),
@@ -92,6 +92,22 @@
                         document.getElementById('om-employees-list').classList.add('om-table-small')
                     }
                 }
+            },
+            setEmployeeData: function (employee) {
+                this.$store.dispatch('updateEmployeeUserId', employee.userId)
+                this.$store.dispatch('updateEmployeeId', employee.id)
+                this.$store.dispatch('updateEmployeeLastName', employee.lastName)
+                this.$store.dispatch('updateEmployeeFirstName', employee.firstName)
+                this.$store.dispatch('updateEmployeePosition', employee.position)
+                this.$store.dispatch('updateEmployeeEmail', employee.email)
+                this.$store.dispatch('updateEmployeeMobilePhone', employee.mobilePhone)
+                this.$store.dispatch('updateEmployeeWorkPhone', employee.workPhone)
+                this.$store.dispatch('updateEmployeeBuilding', employee.building)
+                this.$store.dispatch('updateEmployeeFloor', employee.floor)
+                this.$store.dispatch('updateEmployeeRoom', employee.roomNumber)
+
+                // set inital employee data for later compare if data changed
+                this.initialEmployeeData = this.$store.state.editEmployeeData
             },
             getClickedRow: function (clickedElementPath) {
                 let row = false
