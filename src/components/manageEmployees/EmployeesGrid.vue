@@ -2,7 +2,7 @@
     <table id="om-employees-list" class="om-shadow-effect">
         <thead id="om-employees-list-header">
             <tr>
-                <th v-for="column in columns" v-if="column.visible" :style="{ width: column.width}" >
+                <th v-for="column in columns" v-if="column.visible" :style="{ width: column.width}">
                     <span>
                         {{ column.text }}
                     </span>
@@ -10,8 +10,8 @@
             </tr>
         </thead>
         <tbody :style="{ height: tableHeight+'px' }">
-            <tr v-for="(employee, index) in employeesData"
-                @click="onEmployeeRowClick(employee, $event)"
+            <tr v-for="(employee, index) in allEmployeesData"
+                @click="onEmployeeRowClick(employee, index, $event)"
                 v-bind:class="{ 'second-row': index % 2 == 0 }">
 
                 <td v-for="column in columns"
@@ -23,7 +23,7 @@
                     <span v-else-if="column.field === 'userId'"
                           class="glyphicon glyphicon-user"
                           :class="{disabled : employee[column.field] === 0}"
-                          :style="{}" >
+                          :style="{}">
                     </span>
                     <span v-else>
                         {{ employee[column.field] }}
@@ -42,8 +42,34 @@
         data() {
             return {
                 columns: columnsData,
-                employeesData: testData,
                 errors: []
+            }
+        },
+        created() {
+            let apiIgnore = true;
+
+            if (apiIgnore) {
+                this.$store.dispatch('setAllEmployeesData', this.employeesToObject(testData))
+            } else {
+                // @todo: test api request to get all employees
+                const data = new FormData();
+                data.append('username', 'admin');
+                data.append('password', 'admin');
+
+                axios.post(this.$store.state.API_URL + '/api/authenticate', data)
+                    .then(response => {
+                        axios.get(this.$store.state.API_URL + '/api/_search/employees')
+                            .then(response => {
+                                // JSON responses are automatically parsed.
+                                this.$store.dispatch('allEmployeesData', response.data)
+                            })
+                            .catch(e => {
+                                this.errors.push(e)
+                            })
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    })
             }
         },
         mounted: function () {
@@ -54,6 +80,9 @@
             window.removeEventListener('resize', this.setTableResize)
         },
         computed: {
+            allEmployeesData() {
+                return this.employeesToArray(this.$store.state.allEmployeesData)
+            },
             tableHeight() {
                 return this.$store.state.contentHeight
             }
@@ -63,21 +92,35 @@
                 this.$store.dispatch('setContentHeight', this.calcTableHeader())
             },
             /**
+             * Calculate height of content
+             *
              * @returns {number}
              */
             calcTableHeader: function () {
-                var headerHeight      = document.getElementById('om-header').clientHeight,
+                let headerHeight      = document.getElementById('om-header').clientHeight,
                     navHeight         = document.getElementById('om-navigation').clientHeight,
                     tableHeaderHeight = document.getElementById('om-employees-list-header').clientHeight;
 
                 return document.documentElement.clientHeight - headerHeight - navHeight - tableHeaderHeight - 20;
             },
-            onEmployeeRowClick: function (employee, event) {
+            /**
+             * Set data and styling for edit form
+             *
+             * @param {Object}  employee
+             * @param {int}     index
+             * @param {Event}   event
+             */
+            onEmployeeRowClick: function (employee, index, event) {
                 this.setRowAsSelected(event)
-                this.setEmployeeData(employee)
+                this.setEmployeeData(employee, index)
             },
+            /**
+             * Set clicked row as selected for styling and data
+             *
+             * @param {Event} event
+             */
             setRowAsSelected: function (event) {
-                let clickedRow = this.getClickedRow(event.path),
+                let clickedRow       = this.getClickedRow(event.path),
                     selectedRowClass = 'om-selected-row'
 
                 if (clickedRow) {
@@ -93,7 +136,15 @@
                     }
                 }
             },
-            setEmployeeData: function (employee) {
+            /**
+             * Set employee data for edit form and index for setting changes in table
+             *
+             * @param {Object} employee
+             * @param {int}  index
+             */
+            setEmployeeData: function (employee, index) {
+                this.$store.dispatch('setEmployeeIndex', index)
+
                 this.$store.dispatch('updateEmployeeUserId', employee.userId)
                 this.$store.dispatch('updateEmployeeId', employee.id)
                 this.$store.dispatch('updateEmployeeLastName', employee.lastName)
@@ -107,8 +158,14 @@
                 this.$store.dispatch('updateEmployeeRoom', employee.roomNumber)
 
                 // set inital employee data for later compare if data changed
-                this.initialEmployeeData = this.$store.state.editEmployeeData
+                this.$store.dispatch('setInitialEmployeeData', employee)
             },
+            /**
+             * Get clicked row element
+             *
+             * @param clickedElementPath
+             * @returns {boolean}
+             */
             getClickedRow: function (clickedElementPath) {
                 let row = false
 
@@ -120,88 +177,91 @@
 
                 return row
             },
+            /**
+             * Set all rows as not selected first (to be sure only 1 row is selected)
+             */
             setAllOtherRowsAsNotSelected: function () {
-                var employeesTable = document.getElementById('om-employees-list'),
+                let employeesTable = document.getElementById('om-employees-list'),
                     rows           = employeesTable.rows,
                     selectedClass  = 'om-selected-row'
 
-                for (var i = 0, row; row = rows[i]; i++) {
+                for (let i = 0, row; row = rows[i]; i++) {
                     if (row.classList.contains(selectedClass)) {
                         row.classList.remove(selectedClass)
                     }
                 }
+            },
+            employeesToObject: function (arr) {
+                let obj = {}
+                for (let i = 0; i < arr.length; ++i)
+                    obj[i] = arr[i]
+                return obj
+            },
+            /**
+             *
+             * @param {Object} obj
+             * @returns {Array}
+             */
+            employeesToArray: function (obj) {
+                let arr    = [],
+                    values = Object.values(obj)
+
+                for (let i = 0; i < values.length; ++i) {
+                    arr.push(values[i]);
+                }
+
+                return arr
             }
         }
-        // @todo: create api request to get all employees (fix backend access)
-//        created() {
-//            const data = new FormData();
-//            data.append('username', 'admin');
-//            data.append('password', 'admin');
-//
-//            axios.post(this.$store.state.API_URL + '/api/authenticate', data)
-//                .then(response => {
-//                    axios.get(this.$store.state.API_URL + '/api/_search/employees')
-//                        .then(response => {
-//                            // JSON responses are automatically parsed.
-//                            this.employeesData = response.data
-//                        })
-//                        .catch(e => {
-//                            this.errors.push(e)
-//                        })
-//                })
-//                .catch(e => {
-//                    this.errors.push(e)
-//                })
-//        }
     }
 
     const columnsData = [
         {
-            text  : 'ID',
-            field : 'id',
+            text: 'ID',
+            field: 'id',
             visible: true,
-            width : '6%'
-        },{
-            text  : 'Employee',
-            field : 'firstName',  //'lastName'
+            width: '6%'
+        }, {
+            text: 'Employee',
+            field: 'firstName',  //'lastName'
             visible: true,
-            width : '20%'
-        },{
-            text  : 'isUser',
-            field : 'userId',
+            width: '20%'
+        }, {
+            text: 'isUser',
+            field: 'userId',
             visible: true,
-            width : '5%'
-        },{
-            text  : 'Position',
-            field : 'position',
+            width: '5%'
+        }, {
+            text: 'Position',
+            field: 'position',
             visible: true,
-            width : '17%'
-        },{
-            text  : 'Building',
-            field : 'building',
+            width: '17%'
+        }, {
+            text: 'Building',
+            field: 'building',
             visible: true,
-            width : '18%'
-        },{
-            text  : 'Floor',
-            field : 'floor',
+            width: '18%'
+        }, {
+            text: 'Floor',
+            field: 'floor',
             visible: true,
-            width : '10%'
-        },{
-            text  : 'Room',
-            field : 'roomNumber',
+            width: '10%'
+        }, {
+            text: 'Room',
+            field: 'roomNumber',
             visible: false
-        },{
-            text  : 'Email',
-            field : 'email',
+        }, {
+            text: 'Email',
+            field: 'email',
             visible: true,
-            width : '24%'
-        },{
-            text  : 'Mobile',
-            field : 'mobilePhone',
+            width: '24%'
+        }, {
+            text: 'Mobile',
+            field: 'mobilePhone',
             visible: false
-        },{
-            text  : 'Work',
-            field : 'workPhone',
+        }, {
+            text: 'Work',
+            field: 'workPhone',
             visible: false
         }
     ]

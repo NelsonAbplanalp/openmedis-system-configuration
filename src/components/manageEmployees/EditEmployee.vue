@@ -66,16 +66,20 @@
         name: 'EditEmployee',
         data() {
             return {
-                initialEmployeeData: {},
                 errors: []
             }
         },
         methods: {
             saveEditEmployeeChanges: function () {
                 // @todo: create api post, where data gets changed in database (axios)
+                this.updateEmployeeInTable()
             },
             cancelEditEmployeeChanges: function () {
-                // @todo: reset all changes by initialEmployeeData
+                // reset edit employee data
+                this.$store.dispatch('updateEditEmployeeData', this.$store.state.initialEmployeeData)
+            },
+            updateEmployeeInTable: function () {
+                this.$store.dispatch('setDataInAllEmployeesDataByIndex')
             }
         },
         computed: {
