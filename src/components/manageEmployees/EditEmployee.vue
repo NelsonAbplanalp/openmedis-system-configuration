@@ -71,12 +71,35 @@
         },
         methods: {
             saveEditEmployeeChanges: function () {
-                // @todo: create api post, where data gets changed in database (axios)
-                this.updateEmployeeInTable()
+                let apiReady = false;
+
+                if (apiReady) {
+                    // create/update employee
+                    axios.post(this.$store.state.API_URL + '/api/authenticate', data)
+                        .then(response => {
+                            axios.post(this.$store.state.API_URL + '/api/employee', this.$store.state.editEmployeeData)
+                                .then(response => {
+                                    this.updateEmployeeInTable()
+                                    this.$store.dispatch('setEmployeeEditVisibility', false)
+                                })
+                                .catch(e => {
+                                    this.errors.push(e)
+                                })
+                        })
+                        .catch(e => {
+                            this.errors.push(e)
+                        })
+                } else {
+                    this.updateEmployeeInTable()
+                    this.$store.dispatch('setEmployeeEditVisibility', false)
+                }
+
+                this.$store.dispatch('setEmployeeEditVisibility', false)
             },
             cancelEditEmployeeChanges: function () {
                 // reset edit employee data
                 this.$store.dispatch('updateEditEmployeeData', this.$store.state.initialEmployeeData)
+                this.$store.dispatch('setEmployeeEditVisibility', false)
             },
             updateEmployeeInTable: function () {
                 this.$store.dispatch('setDataInAllEmployeesDataByIndex')

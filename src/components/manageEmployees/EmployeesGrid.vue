@@ -3,14 +3,14 @@
         <thead id="om-employees-list-header">
             <tr>
                 <th v-for="column in columns" v-if="column.visible" :style="{ width: column.width}">
-                    <span>
+                    <span @click="sortBy(column.field)">
                         {{ column.text }}
                     </span>
                 </th>
             </tr>
         </thead>
         <tbody :style="{ height: tableHeight+'px' }">
-            <tr v-for="(employee, index) in allEmployeesData"
+            <tr v-for="(employee, index) in orderedUsers"
                 @click="onEmployeeRowClick(employee, index, $event)"
                 v-bind:class="{ 'second-row': index % 2 == 0 }">
 
@@ -36,11 +36,14 @@
 
 <script>
     import axios from 'axios';
+    import _ from 'lodash'
 
     export default {
         name: 'EmployeesGrid',
         data() {
             return {
+                sortKey: 'id',
+                reverse: false,
                 columns: columnsData,
                 errors: []
             }
@@ -80,6 +83,11 @@
             window.removeEventListener('resize', this.setTableResize)
         },
         computed: {
+            orderedUsers: function () {
+                return this.reverse
+                    ? _.orderBy(this.allEmployeesData, this.sortKey).reverse()
+                    : _.orderBy(this.allEmployeesData, this.sortKey)
+            },
             allEmployeesData() {
                 return this.employeesToArray(this.$store.state.allEmployeesData)
             },
@@ -105,6 +113,13 @@
                 return document.documentElement.clientHeight - headerHeight - navHeight - tableHeaderHeight - listHeaderHeight - 40;
             },
             /**
+             * @param {string}  sortKey
+             */
+            sortBy: function(sortKey) {
+                this.reverse = (this.sortKey === sortKey) ? ! this.reverse : false;
+                this.sortKey = sortKey;
+            },
+            /**
              * Set data and styling for edit form
              *
              * @param {Object}  employee
@@ -128,14 +143,10 @@
                     if (clickedRow.classList.contains('om-selected-row')) {
                         clickedRow.classList.remove(selectedRowClass)
                         this.$store.dispatch('setEmployeeEditVisibility', false)
-                        document.getElementById('om-employees-list').classList.remove('om-table-small')
-                        document.getElementById('om-list-header').classList.remove('om-table-small')
                     } else {
                         this.setAllOtherRowsAsNotSelected()
                         clickedRow.classList.add(selectedRowClass)
                         this.$store.dispatch('setEmployeeEditVisibility', true)
-                        document.getElementById('om-employees-list').classList.add('om-table-small')
-                        document.getElementById('om-list-header').classList.add('om-table-small')
                     }
                 }
             },

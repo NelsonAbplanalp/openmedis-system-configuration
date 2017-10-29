@@ -76,6 +76,14 @@ export default new Vuex.Store({
          */
         setEmployeeEditVisibility (state, visibility) {
             state.isEmployeeEditVisible = visibility
+
+            if (visibility) {
+                document.getElementById('om-employees-list').classList.add('om-table-small')
+                document.getElementById('om-list-header').classList.add('om-table-small')
+            } else {
+                document.getElementById('om-employees-list').classList.remove('om-table-small')
+                document.getElementById('om-list-header').classList.remove('om-table-small')
+            }
         },
         /**
          * Employee edit values
@@ -154,6 +162,9 @@ export default new Vuex.Store({
         setDataInAllEmployeesDataByIndex ({ commit }) {
             commit('setDataInAllEmployeesDataByIndex')
         },
+        addNewEmployeeToAllEmployeesData ({ commit }, newIndex) {
+            commit('addNewEmployeeToAllEmployeesData', newIndex)
+        },
         setContentHeight ({ commit }, height) {
             commit('setContentHeight', height)
         },
@@ -165,7 +176,7 @@ export default new Vuex.Store({
             commit('updateEditEmployeeData', employeeData)
         },
         resetEditEmployeeData ({ commit }) {
-            commit('updateEditEmployeeData')
+            commit('resetEditEmployeeData')
         },
         updateEmployeeUserId ({ commit }, value) {
             commit('updateEmployeeUserId', value)
