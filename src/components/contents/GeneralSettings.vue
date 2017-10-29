@@ -2,7 +2,7 @@
     <main class="main">
         <section class="section">
             <div class="container">
-                <h1>general settings comming soon...</h1>
+                <h1 class="om-title">general settings comming soon...</h1>
             </div>
         </section>
     </main>

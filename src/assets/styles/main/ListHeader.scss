@@ -1,0 +1,24 @@
+/**
+ * Global styles over all views
+ */
+@import "GlobalVariables";
+
+#om-list-header {
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1em 1em 0 1em;
+
+    #om-list-header-left {
+        flex: 1;
+    }
+
+    #om-list-header-right {
+        padding-top: 0.2em;
+    }
+
+    span.glyphicon {
+        font-size: large;
+    }
+}

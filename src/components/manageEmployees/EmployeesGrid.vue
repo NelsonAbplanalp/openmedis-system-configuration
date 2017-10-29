@@ -73,8 +73,8 @@
             }
         },
         mounted: function () {
-            this.$store.dispatch('setContentHeight', this.calcTableHeader() + 112)
-            window.addEventListener('resize', this.setTableResize);
+            this.$store.dispatch('setContentHeight', this.calcTableHeader())
+            window.addEventListener('resize', this.setTableResize)
         },
         beforeDestroy: function () {
             window.removeEventListener('resize', this.setTableResize)
@@ -99,9 +99,10 @@
             calcTableHeader: function () {
                 let headerHeight      = document.getElementById('om-header').clientHeight,
                     navHeight         = document.getElementById('om-navigation').clientHeight,
-                    tableHeaderHeight = document.getElementById('om-employees-list-header').clientHeight;
+                    tableHeaderHeight = document.getElementById('om-employees-list-header').clientHeight,
+                    listHeaderHeight  = document.getElementById('om-list-header').clientHeight
 
-                return document.documentElement.clientHeight - headerHeight - navHeight - tableHeaderHeight - 20;
+                return document.documentElement.clientHeight - headerHeight - navHeight - tableHeaderHeight - listHeaderHeight - 40;
             },
             /**
              * Set data and styling for edit form
@@ -128,11 +129,13 @@
                         clickedRow.classList.remove(selectedRowClass)
                         this.$store.dispatch('setEmployeeEditVisibility', false)
                         document.getElementById('om-employees-list').classList.remove('om-table-small')
+                        document.getElementById('om-list-header').classList.remove('om-table-small')
                     } else {
                         this.setAllOtherRowsAsNotSelected()
                         clickedRow.classList.add(selectedRowClass)
                         this.$store.dispatch('setEmployeeEditVisibility', true)
                         document.getElementById('om-employees-list').classList.add('om-table-small')
+                        document.getElementById('om-list-header').classList.add('om-table-small')
                     }
                 }
             },

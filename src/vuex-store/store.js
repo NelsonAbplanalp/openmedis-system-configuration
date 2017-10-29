@@ -5,15 +5,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        /** @type {String} */
         API_URL: 'https://openmedis-api-url/example',
+        /** @type {Object} */
         userInformation: {
             userName: '',
             apiToken: ''
         },
+        /** @type {number} */
         contentHeight: 0,
-        // employee data
+        /** @type {Object} */
         allEmployeesData: {},
+        /** @type {boolean} */
         isEmployeeEditVisible: false,
+        /** @type {Object} */
         editEmployeeData: {
             userId: '',
             id: '',
@@ -27,13 +32,22 @@ export default new Vuex.Store({
             floor: '',
             roomNumber: ''
         },
+        /** @type {number} */
         employeeIndex: 0,
+        /** @type {Object} */
         initialEmployeeData: {}
     },
     mutations: {
+        /**
+         * @param state
+         * @param data
+         */
         setAllEmployeesData (state, data) {
             state.allEmployeesData = data
         },
+        /**
+         * @param state
+         */
         setDataInAllEmployeesDataByIndex (state) {
             state.allEmployeesData[state.employeeIndex] = {
                 "id": state.editEmployeeData.id,
@@ -49,9 +63,17 @@ export default new Vuex.Store({
                 "workPhone": state.editEmployeeData.workPhone
             }
         },
+        /**
+         * @param state
+         * @param height
+         */
         setContentHeight (state, height) {
             state.contentHeight = height
         },
+        /**
+         * @param state
+         * @param visibility
+         */
         setEmployeeEditVisibility (state, visibility) {
             state.isEmployeeEditVisible = visibility
         },
@@ -70,6 +92,19 @@ export default new Vuex.Store({
             state.editEmployeeData.building = employeeData.building
             state.editEmployeeData.floor = employeeData.floor
             state.editEmployeeData.roomNumber = employeeData.roomNumber
+        },
+        resetEditEmployeeData (state) {
+            state.editEmployeeData.userId = ''
+            state.editEmployeeData.id = ''
+            state.editEmployeeData.lastName = ''
+            state.editEmployeeData.firstName = ''
+            state.editEmployeeData.position = ''
+            state.editEmployeeData.email = ''
+            state.editEmployeeData.mobilePhone = ''
+            state.editEmployeeData.workPhone = ''
+            state.editEmployeeData.building = ''
+            state.editEmployeeData.floor = ''
+            state.editEmployeeData.roomNumber = ''
         },
         updateEmployeeUserId (state, value) {
             state.editEmployeeData.userId = value
@@ -112,6 +147,7 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        // Manage employees
         setAllEmployeesData ({ commit }, data) {
             commit('setAllEmployeesData', data)
         },
@@ -125,12 +161,11 @@ export default new Vuex.Store({
             commit('setEmployeeEditVisibility', visibility)
         },
         // Employee edit values
-        /**
-         * @param commit
-         * @param employeeData
-         */
         updateEditEmployeeData ({ commit}, employeeData) {
             commit('updateEditEmployeeData', employeeData)
+        },
+        resetEditEmployeeData ({ commit }) {
+            commit('updateEditEmployeeData')
         },
         updateEmployeeUserId ({ commit }, value) {
             commit('updateEmployeeUserId', value)

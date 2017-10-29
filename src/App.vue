@@ -31,10 +31,3 @@
         }
     }
 </script>
-
-<style lang="scss">
-    @import "assets/styles/main/Global";
-    @import "assets/styles/main/HeaderNavigation";
-    @import "assets/styles/ManageEmployees";
-    @import "assets/styles/Login";
-</style>
