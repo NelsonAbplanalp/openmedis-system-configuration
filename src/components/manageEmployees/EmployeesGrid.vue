@@ -25,6 +25,10 @@
                           :class="{disabled : employee[column.field] === 0}"
                           :style="{}">
                     </span>
+                    <span v-else-if="column.field === 'removeEmployee'"
+                        class="glyphicon glyphicon-remove"
+                        @click="onEmployeeRemove">
+                    </span>
                     <span v-else>
                         {{ employee[column.field] }}
                     </span>
@@ -44,7 +48,7 @@
             return {
                 sortKey: 'id',
                 reverse: false,
-                columns: columnsData,
+                columns: this.employeesToArray(this.$store.state.employeesColumns),
                 errors: []
             }
         },
@@ -54,7 +58,6 @@
             if (apiIgnore) {
                 this.$store.dispatch('setAllEmployeesData', this.employeesToObject(testData))
             } else {
-                // @todo: test api request to get all employees
                 const data = new FormData();
                 data.append('username', 'admin');
                 data.append('password', 'admin');
@@ -127,8 +130,10 @@
              * @param {Event}   event
              */
             onEmployeeRowClick: function (employee, index, event) {
-                this.setRowAsSelected(event)
-                this.setEmployeeData(employee, index)
+                if (event.path[0].className !== 'glyphicon glyphicon-remove') {
+                    this.setRowAsSelected(event)
+                    this.setEmployeeData(employee, index)
+                }
             },
             /**
              * Set clicked row as selected for styling and data
@@ -205,6 +210,9 @@
                     }
                 }
             },
+            onEmployeeRemove: function () {
+                // @todo: add confirmation window with api call and remove from list
+            },
             employeesToObject: function (arr) {
                 let obj = {}
                 for (let i = 0; i < arr.length; ++i)
@@ -228,57 +236,6 @@
             }
         }
     }
-
-    const columnsData = [
-        {
-            text: 'ID',
-            field: 'id',
-            visible: true,
-            width: '6%'
-        }, {
-            text: 'Employee',
-            field: 'firstName',  //'lastName'
-            visible: true,
-            width: '20%'
-        }, {
-            text: 'isUser',
-            field: 'userId',
-            visible: true,
-            width: '5%'
-        }, {
-            text: 'Position',
-            field: 'position',
-            visible: true,
-            width: '17%'
-        }, {
-            text: 'Building',
-            field: 'building',
-            visible: true,
-            width: '18%'
-        }, {
-            text: 'Floor',
-            field: 'floor',
-            visible: true,
-            width: '10%'
-        }, {
-            text: 'Room',
-            field: 'roomNumber',
-            visible: false
-        }, {
-            text: 'Email',
-            field: 'email',
-            visible: true,
-            width: '24%'
-        }, {
-            text: 'Mobile',
-            field: 'mobilePhone',
-            visible: false
-        }, {
-            text: 'Work',
-            field: 'workPhone',
-            visible: false
-        }
-    ]
 
     const testData = [
         {

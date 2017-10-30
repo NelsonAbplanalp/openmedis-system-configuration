@@ -48,10 +48,16 @@
         float: left;
         overflow: hidden;
         white-space: nowrap;
+        padding: 0.2em;
     }
 
     .glyphicon.glyphicon-user.disabled {
         color: $omDarkGray;
+    }
+
+    .glyphicon.glyphicon-remove {
+        font-size: large;
+        z-index: 2;
     }
 }
 

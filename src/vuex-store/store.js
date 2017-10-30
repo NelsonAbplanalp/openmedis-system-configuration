@@ -14,6 +14,13 @@ export default new Vuex.Store({
         },
         /** @type {number} */
         contentHeight: 0,
+        /** @type {boolean} */
+        isFilterVisible: false,
+        /** @type {Object} */
+        filterData: {
+            filteredColumn: '',
+            filterValue: ''
+        },
         /** @type {Object} */
         allEmployeesData: {},
         /** @type {boolean} */
@@ -35,7 +42,61 @@ export default new Vuex.Store({
         /** @type {number} */
         employeeIndex: 0,
         /** @type {Object} */
-        initialEmployeeData: {}
+        initialEmployeeData: {},
+        employeesColumns: [
+            {
+                text: 'ID',
+                field: 'id',
+                visible: true,
+                width: '6%'
+            }, {
+                text: 'Employee',
+                field: 'firstName',  //'lastName'
+                visible: true,
+                width: '20%'
+            }, {
+                text: 'isUser',
+                field: 'userId',
+                visible: true,
+                width: '5%'
+            }, {
+                text: 'Position',
+                field: 'position',
+                visible: true,
+                width: '15%'
+            }, {
+                text: 'Building',
+                field: 'building',
+                visible: true,
+                width: '15%'
+            }, {
+                text: 'Floor',
+                field: 'floor',
+                visible: true,
+                width: '10%'
+            }, {
+                text: 'Room',
+                field: 'roomNumber',
+                visible: false
+            }, {
+                text: 'Email',
+                field: 'email',
+                visible: true,
+                width: '24%'
+            }, {
+                text: 'Mobile',
+                field: 'mobilePhone',
+                visible: false
+            }, {
+                text: 'Work',
+                field: 'workPhone',
+                visible: false
+            }, {
+                field: 'removeEmployee',
+                visible: true,
+                width: '5%'
+            }
+        ]
     },
     mutations: {
         /**
@@ -69,6 +130,9 @@ export default new Vuex.Store({
          */
         setContentHeight (state, height) {
             state.contentHeight = height
+        },
+        setFilterVisibility (state, visibility) {
+            state.isFilterVisible = visibility
         },
         /**
          * @param state
@@ -167,6 +231,9 @@ export default new Vuex.Store({
         },
         setContentHeight ({ commit }, height) {
             commit('setContentHeight', height)
+        },
+        setFilterVisibility ({ commit }, visibility) {
+            commit('setFilterVisibility', visibility)
         },
         setEmployeeEditVisibility ({ commit }, visibility) {
             commit('setEmployeeEditVisibility', visibility)

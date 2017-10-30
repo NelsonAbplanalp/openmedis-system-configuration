@@ -71,9 +71,12 @@
         },
         methods: {
             saveEditEmployeeChanges: function () {
-                let apiReady = false;
+                let apiIgnore = true;
 
-                if (apiReady) {
+                if (apiIgnore) {
+                    this.updateEmployeeInTable()
+                    this.$store.dispatch('setEmployeeEditVisibility', false)
+                } else {
                     // create/update employee
                     axios.post(this.$store.state.API_URL + '/api/authenticate', data)
                         .then(response => {
@@ -89,9 +92,6 @@
                         .catch(e => {
                             this.errors.push(e)
                         })
-                } else {
-                    this.updateEmployeeInTable()
-                    this.$store.dispatch('setEmployeeEditVisibility', false)
                 }
 
                 this.$store.dispatch('setEmployeeEditVisibility', false)

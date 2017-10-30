@@ -1,0 +1,10 @@
+/**
+ * Global styles over all views
+ */
+@import "GlobalVariables";
+
+#om-list-filter {
+    position:absolute;
+    z-index:10;
+    padding: 1em;
+}
